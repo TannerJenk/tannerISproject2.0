@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Why businesses need consultants</title>
+  <link rel="stylesheet" href="../css/scratch.css" />
+</head>
+<body>
+  <nav class="top-nav" aria-label="Main navigation">
+  <div class="top-nav-inner">
+    <div class="top-nav-left">
+      <!-- “Brand” / title; change text if you want your name instead -->
+      <span class="top-nav-brand">Tanner Jenkins</span>
+    </div>
+    <div class="top-nav-right">
+      <!-- Explicit cross-page link back to résumé -->
+      <a class="top-link" href="../isprojectindex.html">Resumé</a> |
+      <a class="top-link" href="./scratch.html">Consulting</a> |
+      <a class="top-link top-link-active" href="./app.html" aria-current="page">
+        Case Study Quiz
+      </a>
+    </div>
+  </div>
+</nav>
+  <header class="hero2" id="top">
+    <h1>Why businesses need consultants</h1>
+    <p>Consultants bring expertise, objectivity, and measurable impact.</p>
+  </header>
+
+  <main class="content">
+    <!-- content unchanged -->
+    <div class="card">
+      <h2>How consultants add value</h2>
+      <ol>
+        <li>Strategic benefits
+          <ul><li>Market analysis</li><li>Competitive positioning</li></ul>
+        </li>
+        <li>Operational benefits
+          <ul><li>Process optimization</li><li>Technology adoption</li></ul>
+        </li>
+        <li>Financial benefits
+          <ul><li>Cost reduction</li><li>ROI improvement</li></ul>
+        </li>
+      </ol>
+    </div>
+
+<div class="tableauPlaceholder" id="vizConsultingDashboard" style="width:100%; height:800px;">
+  <noscript>
+    <a href="#">
+      <img alt="Consulting Service Expenditures from 2017 to 2021 (Entity Perspective)"
+           src="https://public.tableau.com/static/images/20/2017-2021-ConsultingDashboardEntityPerspective/Dashboard1/1.png"
+           style="border:none;" />
+    </a>
+  </noscript>
+  <object class="tableauViz" style="display:none;">
+    <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F" />
+    <param name="embed_code_version" value="3" />
+    <param name="name" value="2017-2021-ConsultingDashboardEntityPerspective/Dashboard1" />
+    <param name="tabs" value="no" />
+    <param name="toolbar" value="yes" />
+    <param name="animate_transition" value="yes" />
+    <param name="display_spinner" value="yes" />
+    <param name="display_overlay" value="yes" />
+    <param name="display_count" value="yes" />
+    <param name="language" value="en-US" />
+  </object>
+</div>
+
+<div class="card" id="video">
+  <h2>Consulting 101</h2>
+  <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+    <iframe 
+      src="https://www.youtube.com/embed/y6u9_9Ip6cY" 
+      style="position:absolute; top:0; left:0; width:100%; height:100%;" 
+      frameborder="0" 
+      allowfullscreen>
+    </iframe>
+  </div>
+  <p></p>
+</div>
+<script type="text/javascript">
+  var divElement = document.getElementById('vizConsultingDashboard');
+  var vizElement = divElement.getElementsByTagName('object')[0];
+  vizElement.style.width = '100%';
+  vizElement.style.height = '800px';
+  var scriptElement = document.createElement('script');
+  scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+  vizElement.parentNode.insertBefore(scriptElement, vizElement);
+</script>
+  </main>
+
+  <footer class="footer">
+    <p><a href="../isprojectindex.html">Return to resumé</a></p>
+  </footer>
+
+  <!-- Smooth scroll only for same-page anchors (href starting with '#') -->
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

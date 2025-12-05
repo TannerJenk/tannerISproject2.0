@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="../css/scratch.css" />
+  <meta charset="UTF-8" />
+  <title>Northstar Components – Case Study Quiz</title>
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --card-bg: #ffffff;
+      --accent: #0d6efd;
+      --accent-soft: #e5edff;
+      --accent-dark: #0b5ed7;
+      --border-subtle: #e5e7eb;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --success: #16a34a;
+      --danger: #dc2626;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+    }
+
+    /* Navbar */
+    .navbar {
+      width: 100%;
+      background-color: #212529;
+      color: #f8f9fa;
+      padding: 0.5rem 1rem;
+    }
+
+    .navbar-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .navbar-brand {
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: #f8f9fa;
+      text-decoration: none;
+      margin-right: 1rem;
+      white-space: nowrap;
+    }
+
+    .navbar-brand:hover {
+      color: #ffffff;
+    }
+
+    .navbar-nav {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      gap: 0.5rem;
+      margin-left: auto;
+    }
+
+    .nav-item {
+      margin: 0;
+    }
+
+    .nav-link {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      font-size: 1rem;
+      text-decoration: none;
+      border-radius: 0.25rem;
+      color: rgba(255, 255, 255, 0.55);
+      transition:
+        color 0.15s ease-in-out,
+        background-color 0.15s ease-in-out;
+    }
+
+    .nav-link:hover {
+      color: rgba(255, 255, 255, 0.75);
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-link[aria-current="page"] {
+      color: #ffffff;
+    }
+
+    @media (max-width: 768px) {
+      .navbar-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+      }
+      .navbar-nav {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* Layout */
+    .app-shell {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 16px 24px;
+    }
+
+    .app-header {
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .app-title {
+      margin: 0;
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .app-subtitle {
+      margin: 4px 0 0;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .app-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .app-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+      padding: 18px 18px 20px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .score-pill {
+      background: #ecfdf3;
+      color: var(--success);
+    }
+
+    .score-pill .value {
+      font-weight: 700;
+    }
+
+    .case-intro {
+      font-size: 0.87rem;
+      color: var(--text-muted);
+      background: #f9fafb;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+
+    .case-intro strong {
+      color: var(--text-main);
+    }
+
+    .question-text {
+      margin: 14px 0 10px;
+      font-size: 1.05rem;
+      font-weight: 650;
+    }
+
+    .quiz-instructions {
+      margin: 0 0 10px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    #options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .option-btn {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      cursor: pointer;
+      text-align: left;
+      font-size: 0.92rem;
+      transition:
+        background-color 0.12s ease,
+        border-color 0.12s ease,
+        box-shadow 0.12s ease,
+        transform 0.08s ease;
+    }
+
+    .option-btn:hover:not(.locked) {
+      background: #eef2ff;
+      border-color: #6366f1;
+      box-shadow: 0 2px 6px rgba(99, 102, 241, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .option-btn.selected:not(.locked) {
+      border-color: #2563eb;
+      background: #e0ecff;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.5);
+    }
+
+    .option-btn.correct {
+      border-color: var(--success);
+      background: #ecfdf3;
+      color: #166534;
+    }
+
+    .option-btn.incorrect {
+      border-color: var(--danger);
+      background: #fef2f2;
+      color: #991b1b;
+    }
+
+    .option-btn.locked {
+      cursor: default;
+      box-shadow: none;
+      transform: none;
+      opacity: 0.97;
+    }
+
+    #explanation {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #f9fafb;
+      border: 1px dashed #e5e7eb;
+      font-size: 0.88rem;
+      color: #4b5563;
+      min-height: 44px;
+    }
+
+    #controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: #f9fafb;
+      color: var(--text-main);
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition:
+        background 0.12s ease,
+        border-color 0.12s ease,
+        box-shadow 0.12s ease,
+        transform 0.08s ease;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: #f3f4ff;
+      border-color: var(--accent-soft);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent-dark);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent-dark);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border-color: transparent;
+      color: var(--text-muted);
+    }
+
+    .btn-ghost:hover:not(:disabled) {
+      background: #f3f4f6;
+      border-color: #e5e7eb;
+    }
+
+    .status-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .side-card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .side-metric {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0 0 4px;
+    }
+
+    #final-score,
+    #final-grade {
+      font-size: 0.9rem;
+      margin: 3px 0;
+    }
+  </style>
+</head>
+<body>
+  <nav class="top-nav" aria-label="Main navigation">
+  <div class="top-nav-inner">
+    <div class="top-nav-left">
+      <!-- “Brand” / title; change text if you want your name instead -->
+      <span class="top-nav-brand">Tanner Jenkins</span>
+    </div>
+    <div class="top-nav-right">
+      <!-- Explicit cross-page link back to résumé -->
+      <a class="top-link" href="../isprojectindex.html">Resumé</a> |
+      <a class="top-link" href="./scratch.html">Consulting</a> |
+      <a class="top-link top-link-active" href="#app.html" aria-current="page">
+        Case Study Quiz
+      </a>
+    </div>
+  </div>
+</nav>
+  <div class="app-shell">
+    <header class="app-header">
+      <h1 class="app-title">Northstar Components – Cost Reduction Simulation</h1>
+      <p class="app-subtitle">
+        Work through 5 consulting-style decisions across procurement, operations, and supply chain.
+      </p>
+    </header>
+
+    <div class="app-layout">
+      <!-- Main quiz card -->
+      <section class="card">
+        <div class="card-header">
+          <span class="pill">
+            <span id="item-label">Item 1 of 5</span>
+          </span>
+          <span class="pill score-pill">
+            Score:
+            <span id="score-label" class="value">0</span>
+          </span>
+        </div>
+
+        <div class="case-intro">
+          <strong>Client background:</strong>
+          Northstar Components is a mid‑sized U.S. manufacturer of precision metal parts for industrial equipment
+          and commercial HVAC systems. EBITDA margin has fallen from 15% to 9% over 18 months despite stable
+          revenue. The CEO has hired your consulting team to design a 12‑month cost‑reduction program targeting at
+          least 8–10% total cost reduction without hurting service levels.
+        </div>
+
+        <div id="question-text" class="question-text">Loading question…</div>
+        <p class="quiz-instructions">
+          Select an option, then click <strong>Submit</strong>. Once you submit a question, the answer is locked.
+        </p>
+
+        <div id="options"></div>
+
+        <div id="explanation">
+          Explanation and simulated impact will appear here after you submit your answer.
+        </div>
+
+        <div id="controls">
+          <button id="prev-btn" class="btn btn-ghost">Prev</button>
+          <button id="next-btn" class="btn btn-ghost">Next</button>
+          <button id="submit-btn" class="btn btn-primary">Submit</button>
+          <span id="status-label" class="status-label">Not yet submitted.</span>
+        </div>
+      </section>
+
+      <!-- Side summary card -->
+      <aside class="card">
+        <div class="side-card-header">
+          <div class="side-card-title">Assessment summary</div>
+          <p class="side-metric">
+            Use Save to update your final score and grade. Reset clears all answers so you can run the case again.
+          </p>
+        </div>
+
+        <div id="final">
+          <div id="final-score">Final score: 0</div>
+          <div id="final-grade">Grade:</div>
+        </div>
+
+        <div style="margin-top: 10px; display: flex; gap: 8px;">
+          <button id="save-btn" class="btn">Save</button>
+          <button id="reset-btn" class="btn">Reset</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+<script>
+  const TOTAL_QUESTIONS = 5;
+
+  function impactText(percent, notes) {
+    return `Estimated ${percent}% cost reduction. ${notes}`;
+  }
+
+  const questions = [
+    {
+      id: 1,
+      text:
+        "Northstar’s CEO wants a 8–10% cost reduction in 12 months without harming service. Where do you focus your FIRST wave of analysis?",
+      correctOptionId: "B",
+      correctExplanation:
+        "Correct. Starting with a cost waterfall on the top SKUs gives you a fact base on where margin is leaking so you can target the biggest structural levers first.",
+      incorrectExplanation:
+        "Not quite. Symbolic cuts or scattered supplier asks matter less than first building a cost waterfall to see which cost buckets truly drive the margin drop.",
+      options: [
+        {
+          id: "A",
+          label:
+            "Launch a company‑wide travel and T&E freeze to show quick action.",
+          impact: impactText(
+            0.5,
+            "Symbolic but small savings relative to the CEO’s target; not focused on structural drivers."
+          ),
+          scoreDelta: 0
+        },
+        {
+          id: "B",
+          label:
+            "Build a cost waterfall for the top 50 SKUs to understand where margin is leaking (materials, conversion, overhead, logistics).",
+          impact: impactText(
+            8,
+            "Strong foundation for targeted levers and clear sizing of opportunities."
+          ),
+          scoreDelta: 3
+        },
+        {
+          id: "C",
+          label:
+            "Immediately renegotiate all supplier contracts with a flat 5% price reduction ask.",
+          impact: impactText(
+            3,
+            "May capture some savings but risks relationships and misses where structural gaps are largest."
+          ),
+          scoreDelta: 1
+        },
+        {
+          id: "D",
+          label:
+            "Close one plant based on high overhead without further analysis.",
+          impact: impactText(
+            -5,
+            "High disruption risk; may hurt service and overlook better‑targeted levers."
+          ),
+          scoreDelta: -2
+        }
+      ]
+    },
+    {
+      id: 2,
+      text:
+        "Your cost waterfall shows materials are ~60% of product cost, with fragmented suppliers and inconsistent sourcing. What is the best NEXT step in procurement?",
+      correctOptionId: "A",
+      correctExplanation:
+        "Correct. A structured strategic sourcing wave on top categories with RFPs and volume bundling targets the biggest spend in a disciplined way.",
+      incorrectExplanation:
+        "Not quite. The strongest move is a structured strategic sourcing wave on high‑spend categories, not an untested global switch or avoiding procurement altogether.",
+      options: [
+        {
+          id: "A",
+          label:
+            "Run a strategic sourcing wave on top material categories with structured RFPs and volume bundling.",
+          impact: impactText(
+            5,
+            "Targets major spend, introduces competition, and captures early measurable savings."
+          ),
+          scoreDelta: 3
+        },
+        {
+          id: "B",
+          label:
+            "Immediately switch all steel purchases to the lowest‑price global supplier.",
+          impact: impactText(
+            4,
+            "Potential savings but with quality, lead time, and relationship risk if not vetted."
+          ),
+          scoreDelta: 1
+        },
+        {
+          id: "C",
+          label:
+            "Leave procurement as is and focus only on operations to avoid supplier pushback.",
+          impact: impactText(
+            0,
+            "Ignores the largest cost bucket; unlikely to hit the overall target."
+          ),
+          scoreDelta: -1
+        },
+        {
+          id: "D",
+          label:
+            "Reduce the number of suppliers by 50% in one month, regardless of performance.",
+          impact: impactText(
+            1,
+            "Arbitrary consolidation may increase risk and reduce leverage."
+          ),
+          scoreDelta: 0
+        }
+      ]
+    },
+    {
+      id: 3,
+      text:
+        "For a key machined component, prices have increased 15% vs. 5–7% industry benchmarks. How do you strengthen your negotiation position?",
+      correctOptionId: "A",
+      correctExplanation:
+        "Correct. A should‑cost model gives you a data‑driven anchor so you can challenge the supplier on specific cost drivers.",
+      incorrectExplanation:
+        "Not quite. The best approach is to build a should‑cost model so negotiations are grounded in facts rather than threats or intuition.",
+      options: [
+        {
+          id: "A",
+          label:
+            "Build a should‑cost model using material, machining time, and overhead benchmarks before meeting the supplier.",
+          impact: impactText(
+            4,
+            "Reveals inefficiencies and sets a credible target price."
+          ),
+          scoreDelta: 3
+        },
+        {
+          id: "B",
+          label:
+            "Threaten to terminate the supplier if they do not match the lowest quote you can find online.",
+          impact: impactText(
+            1,
+            "May create pressure but can damage collaboration and lacks cost insight."
+          ),
+          scoreDelta: 0
+        },
+        {
+          id: "C",
+          label:
+            "Accept the price increase to preserve the relationship and move on to other categories.",
+          impact: impactText(
+            0,
+            "Leaves a major outlier unaddressed."
+          ),
+          scoreDelta: -1
+        },
+        {
+          id: "D",
+          label:
+            "Split the business randomly across three suppliers to stimulate competition.",
+          impact: impactText(
+            1.5,
+            "Adds competition but may lose volume leverage and increase complexity."
+          ),
+          scoreDelta: 1
+        }
+      ]
+    },
+    {
+      id: 4,
+      text:
+        "One critical component is currently sole‑sourced. The supplier is reliable but expensive. What is the most balanced sourcing strategy?",
+      correctOptionId: "D",
+      correctExplanation:
+        "Correct. Adding a second qualified supplier for part of the volume creates leverage and resilience with controlled risk.",
+      incorrectExplanation:
+        "Not quite. The best balance is to qualify a second supplier for a portion of volume while negotiating with the incumbent, not either full dependence or a total switch overnight.",
+      options: [
+        {
+          id: "A",
+          label:
+            "Stay fully sole‑sourced to avoid operational complexity.",
+          impact: impactText(
+            0,
+            "Maintains reliability but leaves cost pressure untouched."
+          ),
+          scoreDelta: -1
+        },
+        {
+          id: "B",
+          label:
+            "Move 100% of volume to a cheaper new supplier immediately.",
+          impact: impactText(
+            4,
+            "Higher potential savings but significant quality and supply‑risk exposure."
+          ),
+          scoreDelta: 1
+        },
+        {
+          id: "C",
+          label:
+            "Split volume 50/50 among three suppliers regardless of capability.",
+          impact: impactText(
+            1,
+            "Reduces dependence but adds complexity and may dilute leverage."
+          ),
+          scoreDelta: 0
+        },
+        {
+          id: "D",
+          label:
+            "Introduce a second qualified supplier for 20–30% of the volume while negotiating a structured price reduction with the incumbent.",
+          impact: impactText(
+            3.5,
+            "Improves leverage and robustness while managing quality risk."
+          ),
+          scoreDelta: 3
+        }
+      ]
+    },
+    {
+      id: 5,
+      text:
+        "OEE in the main plant is ~60–65%, with high downtime from changeovers and unplanned maintenance. What is the best first move on the shop floor?",
+      correctOptionId: "C",
+      correctExplanation:
+        "Correct. A focused lean diagnostic with SMED workshops on the most constrained lines directly addresses changeover‑driven downtime with relatively low investment.",
+      incorrectExplanation:
+        "Not quite. The right starting point is a focused lean diagnostic with SMED and basic problem‑solving, not adding shifts or large systems before understanding the process waste.",
+      options: [
+        {
+          id: "A",
+          label:
+            "Immediately add a third shift to increase available hours.",
+          impact: impactText(
+            -1,
+            "Raises labor cost and may hide underlying inefficiencies."
+          ),
+          scoreDelta: -2
+        },
+        {
+          id: "B",
+          label:
+            "Install a plant‑wide new MES system before doing any process work.",
+          impact: impactText(
+            1,
+            "Potential visibility benefits but long payback if basic lean issues remain unresolved."
+          ),
+          scoreDelta: 0
+        },
+        {
+          id: "C",
+          label:
+            "Run a focused lean diagnostic including SMED workshops on the most constrained lines to reduce changeover times.",
+          impact: impactText(
+            3,
+            "Targets a key driver of downtime and capacity; relatively low investment with clear impact."
+          ),
+          scoreDelta: 3
+        },
+        {
+          id: "D",
+          label:
+            "Ignore downtime and focus only on supplier negotiations.",
+          impact: impactText(
+            0,
+            "Misses large conversion‑cost opportunities and risks bottlenecks."
+          ),
+          scoreDelta: -1
+        }
+      ]
+    }
+  ];
+
+  // === Quiz state and logic (re‑use your existing version if you already have it) ===
+  let currentIndex = 0;
+  let score = 0;
+  const selectedAnswers = {};
+  const submittedQuestions = {};
+
+  const itemLabelEl = document.getElementById("item-label");
+  const scoreLabelEl = document.getElementById("score-label");
+  const questionTextEl = document.getElementById("question-text");
+  const optionsContainerEl = document.getElementById("options");
+  const explanationEl = document.getElementById("explanation");
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
+  const submitBtn = document.getElementById("submit-btn");
+  const statusLabelEl = document.getElementById("status-label");
+  const saveBtn = document.getElementById("save-btn");
+  const resetBtn = document.getElementById("reset-btn");
+  const finalScoreEl = document.getElementById("final-score");
+  const finalGradeEl = document.getElementById("final-grade");
+
+  function renderQuestion() {
+    const q = questions[currentIndex];
+    itemLabelEl.textContent = `Item ${currentIndex + 1} of ${TOTAL_QUESTIONS}`;
+    scoreLabelEl.textContent = `${score}`;
+    questionTextEl.textContent = q.text;
+
+    const isSubmitted = submittedQuestions[q.id] === true;
+
+    optionsContainerEl.innerHTML = "";
+    q.options.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = opt.label;
+      btn.className = "option-btn";
+
+      const saved = selectedAnswers[q.id];
+      if (saved === opt.id) btn.classList.add("selected");
+
+      if (isSubmitted) {
+        btn.classList.add("locked");
+        if (opt.id === q.correctOptionId) {
+          btn.classList.add("correct");
+        } else if (saved === opt.id && saved !== q.correctOptionId) {
+          btn.classList.add("incorrect");
+        }
+      } else {
+        btn.addEventListener("click", () => {
+          if (submittedQuestions[q.id]) return;
+          selectedAnswers[q.id] = opt.id;
+          renderQuestion();
+        });
+      }
+
+      optionsContainerEl.appendChild(btn);
+    });
+
+    if (isSubmitted) {
+      const chosenId = selectedAnswers[q.id];
+      if (!chosenId) {
+        explanationEl.textContent =
+          "You submitted without selecting an option. Try to choose the best option before submitting.";
+      } else if (chosenId === q.correctOptionId) {
+        explanationEl.textContent = q.correctExplanation;
+      } else {
+        explanationEl.textContent = q.incorrectExplanation;
+      }
+      statusLabelEl.textContent = "Answer submitted – locked.";
+    } else {
+      explanationEl.textContent =
+        "Select an option, then click Submit. Once you submit, the answer is locked.";
+      statusLabelEl.textContent = "Not yet submitted.";
+    }
+
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = currentIndex === TOTAL_QUESTIONS - 1;
+    submitBtn.disabled = isSubmitted || !selectedAnswers[q.id];
+  }
+
+  function submitCurrentQuestion() {
+    const q = questions[currentIndex];
+    const chosenId = selectedAnswers[q.id];
+    if (submittedQuestions[q.id]) return;
+
+    if (chosenId) {
+      const chosenOption = q.options.find(o => o.id === chosenId);
+      if (chosenOption) score += chosenOption.scoreDelta;
+    }
+
+    submittedQuestions[q.id] = true;
+    renderQuestion();
+  }
+
+  function goToNextQuestion() {
+    if (currentIndex < TOTAL_QUESTIONS - 1) {
+      currentIndex++;
+      renderQuestion();
+    }
+  }
+
+  function goToPrevQuestion() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      renderQuestion();
+    }
+  }
+
+  function saveAssessment() {
+    finalScoreEl.textContent = `Final score: ${score}`;
+    let grade = "Needs improvement";
+    if (score >= 12) grade = "Outstanding Northstar strategist";
+    else if (score >= 8) grade = "Strong cost‑reduction strategist";
+    else if (score >= 4) grade = "Developing – review some decisions again";
+    finalGradeEl.textContent = `Grade: ${grade}`;
+  }
+
+  function resetAssessment() {
+    currentIndex = 0;
+    score = 0;
+    for (const k in selectedAnswers) delete selectedAnswers[k];
+    for (const k in submittedQuestions) delete submittedQuestions[k];
+    finalScoreEl.textContent = "Final score: 0";
+    finalGradeEl.textContent = "Grade:";
+    renderQuestion();
+  }
+
+  prevBtn.addEventListener("click", goToPrevQuestion);
+  nextBtn.addEventListener("click", goToNextQuestion);
+  submitBtn.addEventListener("click", submitCurrentQuestion);
+  saveBtn.addEventListener("click", saveAssessment);
+  resetBtn.addEventListener("click", resetAssessment);
+
+  renderQuestion();
+  </script>
+</body>
+</html>
